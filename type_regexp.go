@@ -2,14 +2,14 @@ package otto
 
 import (
 	"fmt"
-	"regexp"
+	"github.com/dlclark/regexp2"
 	"unicode/utf8"
 
-	"github.com/robertkrimen/otto/parser"
+	"github.com/jviksne/otto/parser"
 )
 
 type _regExpObject struct {
-	regularExpression *regexp.Regexp
+	regularExpression *regexp2.Regexp
 	global            bool
 	ignoreCase        bool
 	multiline         bool
@@ -58,7 +58,7 @@ func (runtime *_runtime) newRegExpObject(pattern string, flags string) *_object 
 		re2pattern = fmt.Sprintf("(?%s:%s)", re2flags, re2pattern)
 	}
 
-	regularExpression, err := regexp.Compile(re2pattern)
+	regularExpression, err := regexp2.Compile(re2pattern)
 	if err != nil {
 		panic(runtime.panicSyntaxError("Invalid regular expression: %s", err.Error()[22:]))
 	}
