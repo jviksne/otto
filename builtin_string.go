@@ -2,7 +2,7 @@ package otto
 
 import (
 	"bytes"
-	"regexp"
+	"github.com/jviksne/regexp2"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -153,7 +153,7 @@ func builtinString_match(call FunctionCall) Value {
 	}
 }
 
-var builtinString_replace_Regexp = regexp.MustCompile("\\$(?:[\\$\\&\\'\\`1-9]|0[1-9]|[1-9][0-9])")
+var builtinString_replace_Regexp = regexp2.MustCompile("\\$(?:[\\$\\&\\'\\`1-9]|0[1-9]|[1-9][0-9])", 0)
 
 func builtinString_findAndReplaceString(input []byte, lastIndex int, match []int, target []byte, replaceValue []byte) (output []byte) {
 	matchCount := len(match) / 2
@@ -195,7 +195,7 @@ func builtinString_replace(call FunctionCall) Value {
 	searchObject := searchValue._object()
 
 	// TODO If a capture is -1?
-	var search *regexp.Regexp
+	var search *regexp2.Regexp
 	global := false
 	find := 1
 	if searchValue.IsObject() && searchObject.class == "RegExp" {
@@ -205,7 +205,7 @@ func builtinString_replace(call FunctionCall) Value {
 			find = -1
 		}
 	} else {
-		search = regexp.MustCompile(regexp.QuoteMeta(searchValue.string()))
+		search = regexp2.MustCompile(regexp2.QuoteMeta(searchValue.string()), 0)
 	}
 
 	found := search.FindAllSubmatchIndex(target, find)

@@ -2,7 +2,7 @@ package otto
 
 import (
 	"fmt"
-	"github.com/dlclark/regexp2"
+	"github.com/jviksne/regexp2"
 	"unicode/utf8"
 
 	"github.com/jviksne/otto/parser"
@@ -58,7 +58,7 @@ func (runtime *_runtime) newRegExpObject(pattern string, flags string) *_object 
 		re2pattern = fmt.Sprintf("(?%s:%s)", re2flags, re2pattern)
 	}
 
-	regularExpression, err := regexp2.Compile(re2pattern)
+	regularExpression, err := regexp2.Compile(re2pattern, 0)
 	if err != nil {
 		panic(runtime.panicSyntaxError("Invalid regular expression: %s", err.Error()[22:]))
 	}
