@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"strconv"
+
+	"github.com/jviksne/regexp2"
 )
 
 type _RegExp_parser struct {
@@ -39,6 +41,17 @@ func TransformRegExp(pattern string) (string, error) {
 		return "", nil
 	}
 
+	// JV 2Feb2020: replaced all code below.
+	_, err := regexp2.Compile(pattern, 0)
+
+	if err != nil {
+		return "", err
+	}
+
+	return pattern, nil
+
+	/*
+
 	// TODO If without \, if without (?=, (?!, then another shortcut
 
 	parser := _RegExp_parser{
@@ -58,6 +71,7 @@ func TransformRegExp(pattern string) (string, error) {
 
 	// Might not be re2 compatible, but is still a valid JavaScript RegExp
 	return parser.goRegexp.String(), err
+	*/
 }
 
 func (self *_RegExp_parser) scan() {
