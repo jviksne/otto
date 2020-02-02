@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"github.com/jviksne/regexp2"
 	"unicode/utf8"
+	"time"
 
 	"github.com/jviksne/otto/parser"
 )
+
+const regexpTimeoutMs = time.Millisecond * 5000;
 
 type _regExpObject struct {
 	regularExpression *regexp2.Regexp
@@ -62,6 +65,8 @@ func (runtime *_runtime) newRegExpObject(pattern string, flags string) *_object 
 	if err != nil {
 		panic(runtime.panicSyntaxError("Invalid regular expression: %s", err.Error()[22:]))
 	}
+
+	regularExpression.MatchTimeout = regexpTimeoutMs
 
 	self.value = _regExpObject{
 		regularExpression: regularExpression,
