@@ -1,7 +1,7 @@
 package parser
 
 import (
-	"regexp"
+	"github.com/jviksne/regexp2"
 
 	"github.com/jviksne/otto/ast"
 	"github.com/jviksne/otto/file"
@@ -153,7 +153,7 @@ func (self *_parser) parseRegExpLiteral() *ast.RegExpLiteral {
 				self.error(idx, "Invalid regular expression: %s", err.Error())
 			}
 		} else {
-			_, err = regexp.Compile(pattern)
+			_, err = regexp2.Compile(pattern, 0)
 			if err != nil {
 				// We should not get here, ParseRegExp should catch any errors
 				self.error(idx, "Invalid regular expression: %s", err.Error()[22:]) // Skip redundant "parse regexp error"
